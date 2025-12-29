@@ -6,15 +6,16 @@
 import { validateRequestBody } from './validators/request.js';
 import { generateBlogSummary } from './handlers/summary.js';
 import { reply, success } from './utils/response.js';
+import { parseRequestBody } from './utils/request.js';
 
 /**
  * Main function handler
  * @param {object} context - Appwrite function context
- * @param {object} context.req - Request object
- * @param {object} context.res - Response object
- * @param {function} context.log - Logging function
- * @param {function} context.error - Error logging function
- * @returns {Promise<object>} Response object
+ * @param {object} context.req - request object
+ * @param {object} context.res - response object
+ * @param {function} context.log - logging function
+ * @param {function} context.error - error logging function
+ * @returns {Promise<object>} response object
  */
 export default async ({ req, res, log, error }) => {
   try {
@@ -30,11 +31,15 @@ export default async ({ req, res, log, error }) => {
 
     log('Processing summary generation request...');
 
+    // parse request body - handles multiple formats (Postman, SDK, HTTP)
+    const requestBody = parseRequestBody(req);
+    log('Parsed request body successfully');
+
     // validate request body, must contain title and content fields and content length should be within limits
-    validateRequestBody(req.body);
+    validateRequestBody(requestBody, log);
 
     // generate summary using Gemini API with retry logic
-    const summary = await generateBlogSummary(req.body, log, error);
+    const summary = await generateBlogSummary(requestBody, log, error);
 
     log('Summary generated and returned successfully');
 
