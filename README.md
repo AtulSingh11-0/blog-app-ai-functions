@@ -243,7 +243,11 @@ Both functions require the following environment variables:
 
 ## 📄 License
 
-This project is part of a blog application powered by Appwrite and Google Gemini AI.
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0) and It is part of a blog application powered by Appwrite and Google Gemini AI.
+
+- You are free to use, study, and modify this project.
+- Any modifications or derivative works **must also be open-sourced** under the same license.
+- If you run a modified version of this project as a service, you must make the source code available.
 
 ## 🤝 Contributing
 
