@@ -23,12 +23,12 @@ Performs semantic search on blog posts based on a text query.
 
 **Query Parameters:**
 
-| Parameter   | Type   | Required | Default | Description                                      |
-| ----------- | ------ | -------- | ------- | ------------------------------------------------ |
-| `query`     | string | Yes      | -       | The search query text                            |
-| `limit`     | number | No       | 1000    | Maximum number of posts to fetch                 |
-| `offset`    | number | No       | 0       | Offset for pagination                            |
-| `threshold` | number | No       | 0.5     | Minimum similarity score (0.0 to 1.0)            |
+| Parameter   | Type   | Required | Default | Description                           |
+| ----------- | ------ | -------- | ------- | ------------------------------------- |
+| `query`     | string | Yes      | -       | The search query text                 |
+| `limit`     | number | No       | 1000    | Maximum number of posts to fetch      |
+| `offset`    | number | No       | 0       | Offset for pagination                 |
+| `threshold` | number | No       | 0.5     | Minimum similarity score (0.0 to 1.0) |
 
 **Example Request:**
 
@@ -82,25 +82,63 @@ Sample `500` Response:
 
 ## 🔧 Configuration
 
-| Setting           | Value                |
-| ----------------- | -------------------- |
-| Runtime           | Node 22              |
-| Entrypoint        | `src/main.js`        |
-| Build Commands    | `npm install`        |
-| Permissions       | `any`                |
-| Timeout (Seconds) | 15                   |
-| Specification     | s-0.5vcpu-512mb      |
+| Setting           | Value           |
+| ----------------- | --------------- |
+| Runtime           | Node 22         |
+| Entrypoint        | `src/main.js`   |
+| Build Commands    | `npm install`   |
+| Permissions       | `any`           |
+| Timeout (Seconds) | 15              |
+| Specification     | s-0.5vcpu-512mb |
+
+### Project Structure
+
+This function follows a **modular architecture** for better maintainability:
+
+```text
+src/
+├── main.js                   # Main entrypoint and route handling
+├── config/
+│   ├── appwrite.js           # Appwrite client initialization
+│   └── constants.js          # Configuration constants
+├── validators/
+│   └── search.js             # Search parameter validation
+├── handlers/
+│   └── search.js             # Semantic search orchestration
+├── services/
+│   ├── database.js           # Appwrite database service
+│   └── gemini.js             # Gemini AI embedding service
+└── utils/
+    ├── math.js               # Vector math operations
+    └── response.js           # Response utility functions
+```
+
+**Module Responsibilities:**
+
+- **`main.js`** – Orchestrates request handling and response
+- **`config/`** – Centralized configuration and client setup
+- **`validators/`** – Input validation with comprehensive error checking
+- **`handlers/`** – Core search logic and orchestration
+- **`services/`** – External API integrations (Gemini, Appwrite)
+- **`utils/`** – Reusable utility functions (math, responses)
+
+**Benefits:**
+
+- ✅ Clean separation of concerns
+- ✅ Easy to test individual modules
+- ✅ Simple to add new features
+- ✅ Better code organization and readability
 
 ## 🔒 Environment Variables
 
-| Variable                    | Description                              | Required |
-| --------------------------- | ---------------------------------------- | -------- |
-| `GOOGLE_GENAI_API_KEY`      | Your Google Gemini API key               | Yes      |
-| `APPWRITE_ENDPOINT`         | Appwrite API endpoint URL                | Yes      |
-| `APPWRITE_PROJECT_ID`       | Your Appwrite project ID                 | Yes      |
-| `APPWRITE_API_KEY`          | Your Appwrite API key with permissions   | Yes      |
-| `APPWRITE_DATABASE_ID`      | Database ID containing blog posts        | Yes      |
-| `APPWRITE_POSTS_TABLE_ID`   | Table ID for blog posts                  | Yes      |
+| Variable                  | Description                            | Required |
+| ------------------------- | -------------------------------------- | -------- |
+| `GOOGLE_GENAI_API_KEY`    | Your Google Gemini API key             | Yes      |
+| `APPWRITE_ENDPOINT`       | Appwrite API endpoint URL              | Yes      |
+| `APPWRITE_PROJECT_ID`     | Your Appwrite project ID               | Yes      |
+| `APPWRITE_API_KEY`        | Your Appwrite API key with permissions | Yes      |
+| `APPWRITE_DATABASE_ID`    | Database ID containing blog posts      | Yes      |
+| `APPWRITE_POSTS_TABLE_ID` | Table ID for blog posts                | Yes      |
 
 ## 📦 Dependencies
 
@@ -113,12 +151,15 @@ Sample `500` Response:
 
 ## 🔄 How It Works
 
-1. **Query Reception:** Receives search query and parameters from the request
-2. **Generate Query Embedding:** Converts the query text into a 768-dimensional vector using Gemini
-3. **Fetch Posts:** Retrieves posts from Appwrite TablesDB (with pagination support)
-4. **Calculate Similarity:** Computes cosine similarity between query embedding and each post's embedding
-5. **Filter & Sort:** Filters posts by threshold and sorts by similarity (descending)
-6. **Return Results:** Returns relevant posts with similarity scores
+The function follows a modular workflow:
+
+1. **Query Reception** ([`main.js`](src/main.js)): Receives search query and parameters from the request
+2. **Parameter Validation** ([`validators/search.js`](src/validators/search.js)): Validates query parameters (query, limit, offset, threshold)
+3. **Generate Query Embedding** ([`services/gemini.js`](src/services/gemini.js)): Converts the query text into a 768-dimensional vector using Gemini
+4. **Fetch Posts** ([`services/database.js`](src/services/database.js)): Retrieves posts from Appwrite TablesDB with pagination support
+5. **Calculate Similarity** ([`utils/math.js`](src/utils/math.js)): Computes cosine similarity between query embedding and each post's embedding
+6. **Filter & Sort** ([`handlers/search.js`](src/handlers/search.js)): Filters posts by threshold and sorts by similarity (descending)
+7. **Return Results** ([`utils/response.js`](src/utils/response.js)): Returns relevant posts with similarity scores in standardized format
 
 ## 🔬 Technical Details
 
