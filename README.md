@@ -1,6 +1,12 @@
 # Blog App AI Functions
 
 ![License: AGPL-3.0](https://img.shields.io/badge/license-AGPLv3-blue.svg)
+![Open Source](https://img.shields.io/badge/Open%20Source-Yes-success)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22-brightgreen)
+![Appwrite](https://img.shields.io/badge/Backend-Appwrite-f02e65)
+![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange)
+![Serverless](https://img.shields.io/badge/Architecture-Serverless-blueviolet)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 A collection of Appwrite Cloud Functions powered by Google Gemini AI for blog post management and semantic search capabilities.
 
