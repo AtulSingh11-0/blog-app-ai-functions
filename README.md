@@ -65,22 +65,69 @@ Performs semantic search on blog posts using vector embeddings and cosine simila
 
 ## 📦 Project Structure
 
+This project follows a **modular architecture** with each function organized into separate, well-defined modules:
+
 ```text
 blog-app-ai-functions/
-├── appwrite.config.json          # Appwrite project configuration
-├── functions/
-│   ├── generate-post-summary-function/
-│   │   ├── src/
-│   │   │   └── main.js          # Summary generation logic
-│   │   ├── package.json
-│   │   └── README.md
-│   └── semantic-search-function/
-│       ├── src/
-│       │   └── main.js          # Semantic search logic
-│       ├── package.json
-│       └── README.md
-└── README.md
+├── README.md
+├── CONTRIBUTING.md
+├── appwrite.config.json          # Appwrite configuration (not in repo)
+└── functions/
+    ├── generate-post-summary-function/
+    │   ├── src/
+    │   │   ├── main.js           # Main entrypoint
+    │   │   ├── config/
+    │   │   │   └── constants.js  # Configuration constants
+    │   │   ├── validators/
+    │   │   │   └── request.js    # Request validation
+    │   │   ├── handlers/
+    │   │   │   └── summary.js    # Summary generation handler
+    │   │   ├── services/
+    │   │   │   └── gemini.js     # Gemini AI service
+    │   │   └── utils/
+    │   │       ├── response.js   # Response utilities
+    │   │       └── text.js       # Text processing utilities
+    │   ├── package.json
+    │   └── README.md
+    └── semantic-search-function/
+        ├── src/
+        │   ├── main.js           # Main entrypoint
+        │   ├── config/
+        │   │   ├── appwrite.js   # Appwrite client setup
+        │   │   └── constants.js  # Configuration constants
+        │   ├── validators/
+        │   │   └── search.js     # Search parameter validation
+        │   ├── handlers/
+        │   │   └── search.js     # Semantic search handler
+        │   ├── services/
+        │   │   ├── database.js   # Database service
+        │   │   └── gemini.js     # Gemini AI embedding service
+        │   └── utils/
+        │       ├── math.js       # Vector math utilities
+        │       └── response.js   # Response utilities
+        ├── package.json
+        └── README.md
 ````
+
+### Architecture Principles
+
+Both functions follow a **modular, layered architecture**:
+
+- **`main.js`** – Entrypoint with route handling and orchestration
+- **`config/`** – Configuration constants and client initialization
+- **`validators/`** – Input validation with meaningful error messages
+- **`handlers/`** – Core business logic and orchestration
+- **`services/`** – External API integrations (Gemini, Appwrite)
+- **`utils/`** – Reusable utility functions
+
+**Benefits:**
+
+- ✅ **Separation of Concerns** – Each module has a single responsibility
+- ✅ **Maintainability** – Easy to locate and modify specific functionality
+- ✅ **Testability** – Each module can be unit tested independently
+- ✅ **Reusability** – Utilities can be imported across modules
+- ✅ **Scalability** – Simple to add new features without cluttering files
+- ✅ **Documentation** – JSDoc comments on all functions
 
 ---
 
@@ -274,9 +321,45 @@ All original code in this repository is authored by Atul Singh and licensed unde
 
 ## 🤝 Contributing
 
-Contributions are welcome!
+We welcome contributions! Whether it's bug fixes, new features, documentation improvements, or performance optimizations.
 
-By contributing to this repository, you agree that your contributions will be licensed under the **AGPL-3.0**.
+**Before contributing, please read our [Contributing Guidelines](CONTRIBUTING.md)** which includes:
+
+- Project structure and code organization
+- Code style and best practices
+- Testing requirements
+- How to submit pull requests
+- Development tips and common pitfalls
+
+Quick start for contributors:
+
+```bash
+# Fork and clone the repository
+git clone https://github.com/your-username/blog-app-ai-functions.git
+
+# Create a feature branch
+git checkout -b feature/your-feature-name
+
+# Install dependencies
+cd functions/your-function-name
+npm install
+
+# Make your changes and test locally
+appwrite run functions
+
+# Format your code
+npm run format
+
+# Commit and push
+git commit -m "feat: your feature description"
+git push origin feature/your-feature-name
+```
+
+Then open a pull request with a clear description of your changes.
+
+**By contributing to this repository, you agree that your contributions will be licensed under the AGPL-3.0.**
+
+For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
