@@ -91,6 +91,7 @@ blog-app-ai-functions/
     │   │   ├── services/
     │   │   │   └── gemini.js     # Gemini AI service
     │   │   └── utils/
+    │   │       ├── request.js    # Request parsing utilities
     │   │       ├── response.js   # Response utilities
     │   │       └── text.js       # Text processing utilities
     │   ├── package.json

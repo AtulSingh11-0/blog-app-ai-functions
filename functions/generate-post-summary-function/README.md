@@ -94,7 +94,8 @@ src/
 │   └── summary.js            # Summary generation with retry logic
 ├── services/
 │   └── gemini.js             # Gemini AI service integration
-└── utils/
+└── utils/    
+    ├── request.js            # Request parsing utilities
     ├── response.js           # Response utility functions
     └── text.js               # Text processing utilities
 ```
@@ -106,7 +107,7 @@ src/
 - **`validators/`** – Input validation with error handling
 - **`handlers/`** – Core business logic and retry mechanisms
 - **`services/`** – External API integrations (Gemini)
-- **`utils/`** – Reusable utility functions
+- **`utils/`** – Reusable utility functions (request parsing, responses, text processing)
 
 **Benefits:**
 
@@ -145,13 +146,14 @@ The function uses the following configurable constants (defined in [`src/config/
 
 The function follows a modular workflow:
 
-1. **Validation** ([`validators/request.js`](src/validators/request.js)): Validates incoming request for required fields (title, content) and content length limits
-2. **HTML Stripping** ([`utils/text.js`](src/utils/text.js)): Removes HTML tags, scripts, and styles to extract plain text
-3. **Truncation** ([`utils/text.js`](src/utils/text.js)): Truncates content to 3,000 characters for API efficiency
-4. **AI Generation** ([`services/gemini.js`](src/services/gemini.js)): Sends optimized prompt to Gemini Flash Lite for summary generation
-5. **Error Handling** ([`handlers/summary.js`](src/handlers/summary.js)): Implements retry logic for rate limits with exponential backoff
-6. **Fallback** ([`handlers/summary.js`](src/handlers/summary.js)): If AI fails, generates a simple text-based summary from the first 70 words
-7. **Response** ([`utils/response.js`](src/utils/response.js)): Returns the generated summary in a standardized JSON format
+1. **Request Parsing** ([`utils/request.js`](src/utils/request.js)): Parses request body from multiple sources (Postman, Appwrite SDK, HTTP) using `bodyJson`, `bodyText`, or `body`
+2. **Validation** ([`validators/request.js`](src/validators/request.js)): Validates incoming request for required fields (title, content) and content length limits
+3. **HTML Stripping** ([`utils/text.js`](src/utils/text.js)): Removes HTML tags, scripts, and styles to extract plain text
+4. **Truncation** ([`utils/text.js`](src/utils/text.js)): Truncates content to 3,000 characters for API efficiency
+5. **AI Generation** ([`services/gemini.js`](src/services/gemini.js)): Sends optimized prompt to Gemini Flash Lite for summary generation
+6. **Error Handling** ([`handlers/summary.js`](src/handlers/summary.js)): Implements retry logic for rate limits with exponential backoff
+7. **Fallback** ([`handlers/summary.js`](src/handlers/summary.js)): If AI fails, generates a simple text-based summary from the first 70 words
+8. **Response** ([`utils/response.js`](src/utils/response.js)): Returns the generated summary in a standardized JSON format
 
 ## 🛠️ Technical Details
 
