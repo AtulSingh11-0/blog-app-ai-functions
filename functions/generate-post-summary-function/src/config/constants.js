@@ -9,7 +9,7 @@ export const MAX_RETRIES = 3; // max retries for rate limit errors
 export const RETRY_BASE_DELAY = 10_000; // base delay for retries in ms
 
 export const GEMINI_CONFIG = {
-  model: 'gemini-flash-lite-latest',
+  model: 'gemini-flash-latest',
   temperature: 1.0,
   maxOutputTokens: 150,
   topP: 0.95,
