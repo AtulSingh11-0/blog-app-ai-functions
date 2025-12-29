@@ -1,13 +1,19 @@
 # Blog App AI Functions
 
+![License: AGPL-3.0](https://img.shields.io/badge/license-AGPLv3-blue.svg)
+
 A collection of Appwrite Cloud Functions powered by Google Gemini AI for blog post management and semantic search capabilities.
+
+---
 
 ## 📋 Overview
 
 This project contains two serverless functions designed to enhance a blog application with AI-powered features:
 
-1. **Generate Post Summary Function** - Automatically generates concise, engaging summaries for blog posts
-2. **Semantic Search Function** - Enables semantic search across blog posts using vector embeddings
+1. **Generate Post Summary Function** – Automatically generates concise, engaging summaries for blog posts  
+2. **Semantic Search Function** – Enables semantic search across blog posts using vector embeddings  
+
+---
 
 ## 🚀 Functions
 
@@ -25,6 +31,8 @@ Leverages Google Gemini Flash Lite to generate compelling summaries for blog pos
 
 **Location:** [`functions/generate-post-summary-function`](functions/generate-post-summary-function)
 
+---
+
 ### 2. Semantic Search Function
 
 Performs semantic search on blog posts using vector embeddings and cosine similarity.
@@ -39,17 +47,21 @@ Performs semantic search on blog posts using vector embeddings and cosine simila
 
 **Location:** [`functions/semantic-search-function`](functions/semantic-search-function)
 
+---
+
 ## 🛠️ Technology Stack
 
 - **Runtime:** Node.js 22
-- **AI Provider:** Google Gemini AI
-  - `gemini-flash-lite-latest` for summary generation
-  - `gemini-embedding-001` for semantic search
+- **AI Provider:** Google Gemini AI  
+  - `gemini-flash-lite-latest` for summary generation  
+  - `gemini-embedding-001` for semantic search  
 - **Backend:** Appwrite Cloud Functions
 - **Database:** Appwrite TablesDB
 - **Dependencies:**
-  - `@google/genai` - Google Generative AI SDK
-  - `node-appwrite` - Appwrite Node.js SDK
+  - `@google/genai` – Google Generative AI SDK
+  - `node-appwrite` – Appwrite Node.js SDK
+
+---
 
 ## 📦 Project Structure
 
@@ -68,7 +80,9 @@ blog-app-ai-functions/
 │       ├── package.json
 │       └── README.md
 └── README.md
-```
+````
+
+---
 
 ## 🔧 Setup & Configuration
 
@@ -78,77 +92,77 @@ blog-app-ai-functions/
 - Google Gemini API key
 - [Appwrite CLI](https://appwrite.io/docs/tooling/command-line/installation)
 
+---
+
 ### Environment Variables
 
-Both functions require the following environment variables:
+Both functions require the following environment variables.
 
 #### Generate Post Summary Function
 
-- `GOOGLE_GENAI_API_KEY` - Your Google Gemini API key
+- `GOOGLE_GENAI_API_KEY` – Your Google Gemini API key
 
 #### Semantic Search Function
 
-- `GOOGLE_GENAI_API_KEY` - Your Google Gemini API key
-- `APPWRITE_ENDPOINT` - Your Appwrite endpoint URL
-- `APPWRITE_PROJECT_ID` - Your Appwrite project ID
-- `APPWRITE_API_KEY` - Your Appwrite API key
-- `APPWRITE_DATABASE_ID` - Database ID containing blog posts
-- `APPWRITE_POSTS_TABLE_ID` - Table ID for blog posts
+- `GOOGLE_GENAI_API_KEY` – Your Google Gemini API key
+- `APPWRITE_ENDPOINT` – Your Appwrite endpoint URL
+- `APPWRITE_PROJECT_ID` – Your Appwrite project ID
+- `APPWRITE_API_KEY` – Your Appwrite API key
+- `APPWRITE_DATABASE_ID` – Database ID containing blog posts
+- `APPWRITE_POSTS_TABLE_ID` – Table ID for blog posts
 
-### Deployment
+---
 
-**Important Note:** The `appwrite.config.json` file is not included in the repository as it contains project-specific configuration and secrets. You'll need to set up your own configuration.
+## 🚀 Deployment
 
-#### Initial Setup
+> **Important:** The `appwrite.config.json` file is not included in the repository because it contains project-specific configuration and secrets. You must generate your own configuration.
 
-1. **Clone the repository:**
+### Initial Setup
+
+1. **Clone the repository**
 
    ```bash
    git clone https://github.com/AtulSingh11-0/blog-app-ai-functions.git
    cd blog-app-ai-functions
    ```
 
-2. **Install Appwrite CLI** (if not already installed):
+2. **Install Appwrite CLI**
 
    ```bash
    npm install -g appwrite-cli
    ```
 
-3. **Login to your Appwrite account:**
+3. **Login to Appwrite**
 
    ```bash
    appwrite login
    ```
 
-4. **Initialize your Appwrite project:**
+4. **Initialize Appwrite project**
 
    ```bash
    appwrite init project
    ```
 
-   This creates your `appwrite.config.json` file with your project configuration.
-
-5. **Pull your existing functions** (if you have them on Appwrite Console):
+5. **Pull or initialize functions**
 
    ```bash
    appwrite pull functions
-   ```
-
-   Or **initialize new functions** from scratch:
-
-   ```bash
+   # or
    appwrite init functions
    ```
 
-6. **Configure environment variables** for each function in the Appwrite Console or via CLI.
+6. **Configure environment variables** via Appwrite Console or CLI
 
-7. **Deploy your functions:**
+7. **Deploy functions**
 
    ```bash
    appwrite push functions
    ```
 
-> **Note:** Appwrite CLI commands may be updated over time. If you encounter any errors, please refer to the [official Appwrite CLI documentation](https://appwrite.io/docs/tooling/command-line/installation) for the latest command syntax.
+> Appwrite CLI commands may change over time. Refer to the official documentation if needed.
+
+---
 
 ## 📖 API Documentation
 
@@ -161,7 +175,7 @@ Both functions require the following environment variables:
 ```json
 {
   "title": "Your Blog Post Title",
-  "content": "<p>Your blog post content with HTML tags...</p>"
+  "content": "<p>Your blog post content...</p>"
 }
 ```
 
@@ -178,16 +192,18 @@ Both functions require the following environment variables:
 }
 ```
 
+---
+
 ### Semantic Search
 
 **Endpoint:** `GET /search`
 
 **Query Parameters:**
 
-- `query` (required) - Search query text
-- `limit` (optional) - Maximum number of posts to fetch (default: 1000)
-- `offset` (optional) - Offset for pagination (default: 0)
-- `threshold` (optional) - Minimum similarity score (default: 0.5)
+- `query` (required)
+- `limit` (default: 1000)
+- `offset` (default: 0)
+- `threshold` (default: 0.5)
 
 **Response:**
 
@@ -210,52 +226,61 @@ Both functions require the following environment variables:
 }
 ```
 
+---
+
 ## 🔒 Security
 
-- All functions require API keys and proper authentication
-- Execute permissions set to "any" (configure based on your needs)
-- Environment variables are securely stored in Appwrite
-- Input validation to prevent malicious content
+- API keys and secrets are managed via Appwrite environment variables
+- Proper authentication is required for Appwrite access
+- Input validation is applied where applicable
+
+> This project is provided **“as is”**, without warranty of any kind.
+> You are responsible for securing your deployment, API keys, and cloud resources.
+
+---
 
 ## 📝 Development
 
 ### Local Development
 
-1. Navigate to a function directory:
+```bash
+cd functions/generate-post-summary-function
+# or
+cd functions/semantic-search-function
 
-   ```bash
-   cd functions/generate-post-summary-function
-   # or
-   cd functions/semantic-search-function
-   ```
+npm install
+npm run format
+```
 
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Format code:
-
-   ```bash
-   npm run format
-   ```
+---
 
 ## 📄 License
 
-This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0) and It is part of a blog application powered by Appwrite and Google Gemini AI.
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+It is part of a blog application powered by Appwrite and Google Gemini AI.
 
-- You are free to use, study, and modify this project.
-- Any modifications or derivative works **must also be open-sourced** under the same license.
-- If you run a modified version of this project as a service, you must make the source code available.
+- You are free to use, study, and modify this project
+- Any modifications or derivative works **must remain open source** under AGPL-3.0
+- If you run a modified version as a network service, you must provide the source code
+
+---
+
+## ©️ Copyright
+
+© 2025 **Atul Singh**
+All original code in this repository is authored by Atul Singh and licensed under AGPL-3.0.
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions are welcome!
+
+By contributing to this repository, you agree that your contributions will be licensed under the **AGPL-3.0**.
+
+---
 
 ## 📞 Support
-
-For issues and questions:
 
 - [Appwrite Documentation](https://appwrite.io/docs)
 - [Appwrite Discord](https://appwrite.io/discord)
