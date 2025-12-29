@@ -70,30 +70,67 @@ Sample `400` Response (Content too long):
 
 ## 🔧 Configuration
 
-| Setting           | Value                |
-| ----------------- | -------------------- |
-| Runtime           | Node 22              |
-| Entrypoint        | `src/main.js`        |
-| Build Commands    | `npm install`        |
-| Permissions       | `any`                |
-| Timeout (Seconds) | 15                   |
-| Specification     | s-0.5vcpu-512mb      |
+| Setting           | Value           |
+| ----------------- | --------------- |
+| Runtime           | Node 22         |
+| Entrypoint        | `src/main.js`   |
+| Build Commands    | `npm install`   |
+| Permissions       | `any`           |
+| Timeout (Seconds) | 15              |
+| Specification     | s-0.5vcpu-512mb |
 
-### Constants
+### Project Structure
 
-The function uses the following configurable constants:
+This function follows a **modular architecture** for better maintainability:
+
+```text
+src/
+├── main.js                   # Main entrypoint and route handling
+├── config/
+│   └── constants.js          # Configuration constants
+├── validators/
+│   └── request.js            # Request validation logic
+├── handlers/
+│   └── summary.js            # Summary generation with retry logic
+├── services/
+│   └── gemini.js             # Gemini AI service integration
+└── utils/
+    ├── response.js           # Response utility functions
+    └── text.js               # Text processing utilities
+```
+
+**Module Responsibilities:**
+
+- **`main.js`** – Orchestrates request handling and response
+- **`config/`** – Centralized configuration and constants
+- **`validators/`** – Input validation with error handling
+- **`handlers/`** – Core business logic and retry mechanisms
+- **`services/`** – External API integrations (Gemini)
+- **`utils/`** – Reusable utility functions
+
+**Benefits:**
+
+- ✅ Clean separation of concerns
+- ✅ Easy to test individual modules
+- ✅ Simple to add new features
+- ✅ Better code organization and readability
+
+### Configuration Constants
+
+The function uses the following configurable constants (defined in [`src/config/constants.js`](src/config/constants.js)):
 
 - `MAX_CONTENT_LENGTH_DB`: 100,000 characters (maximum content length accepted)
 - `MAX_CONTENT_LENGTH`: 3,000 characters (maximum content sent to Gemini API)
 - `SUMMARY_MAX_WORDS`: 70 words (target summary length)
 - `MAX_RETRIES`: 3 (maximum retry attempts for rate limits)
 - `RETRY_BASE_DELAY`: 10,000ms (base delay for exponential backoff)
+- `GEMINI_CONFIG`: Gemini model configuration (model, temperature, tokens, etc.)
 
 ## 🔒 Environment Variables
 
-| Variable                  | Description                         | Required |
-| ------------------------- | ----------------------------------- | -------- |
-| `GOOGLE_GENAI_API_KEY`    | Your Google Gemini API key          | Yes      |
+| Variable               | Description                | Required |
+| ---------------------- | -------------------------- | -------- |
+| `GOOGLE_GENAI_API_KEY` | Your Google Gemini API key | Yes      |
 
 ## 📦 Dependencies
 
@@ -106,13 +143,15 @@ The function uses the following configurable constants:
 
 ## 🔄 How It Works
 
-1. **Validation:** Validates incoming request for required fields (title, content) and content length limits
-2. **HTML Stripping:** Removes HTML tags, scripts, and styles to extract plain text
-3. **Truncation:** Truncates content to 3,000 characters for API efficiency
-4. **AI Generation:** Sends optimized prompt to Gemini Flash Lite for summary generation
-5. **Error Handling:** Implements retry logic for rate limits with exponential backoff
-6. **Fallback:** If AI fails, generates a simple text-based summary from the first 70 words
-7. **Response:** Returns the generated summary in a standardized JSON format
+The function follows a modular workflow:
+
+1. **Validation** ([`validators/request.js`](src/validators/request.js)): Validates incoming request for required fields (title, content) and content length limits
+2. **HTML Stripping** ([`utils/text.js`](src/utils/text.js)): Removes HTML tags, scripts, and styles to extract plain text
+3. **Truncation** ([`utils/text.js`](src/utils/text.js)): Truncates content to 3,000 characters for API efficiency
+4. **AI Generation** ([`services/gemini.js`](src/services/gemini.js)): Sends optimized prompt to Gemini Flash Lite for summary generation
+5. **Error Handling** ([`handlers/summary.js`](src/handlers/summary.js)): Implements retry logic for rate limits with exponential backoff
+6. **Fallback** ([`handlers/summary.js`](src/handlers/summary.js)): If AI fails, generates a simple text-based summary from the first 70 words
+7. **Response** ([`utils/response.js`](src/utils/response.js)): Returns the generated summary in a standardized JSON format
 
 ## 🛠️ Technical Details
 
